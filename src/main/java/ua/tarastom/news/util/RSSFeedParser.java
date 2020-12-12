@@ -30,10 +30,13 @@ public class RSSFeedParser {
     static final String ENCLOSURE = "enclosure";
     static final String CATEGORY = "category";
     static final String FULL_TEXT = "full-text";
+    static final String FULL_TEXT2 = "fulltext";
+    private String country;
     List<Article> articles = new ArrayList<>();
     final URL url;
 
-    public RSSFeedParser(String feedUrl) {
+    public RSSFeedParser(String feedUrl, String country) {
+        this.country = country;
         try {
             this.url = new URL(feedUrl);
         } catch (MalformedURLException e) {
@@ -80,10 +83,10 @@ public class RSSFeedParser {
                             eventReader.nextEvent();
                             break;
                         case TITLE:
-                            title = getCharacterData(eventReader);
+                            title = getCharacterData(eventReader).trim();
                             break;
                         case DESCRIPTION:
-                            description = getCharacterData(eventReader);
+                            description = getCharacterData(eventReader).trim();
                             break;
                         case LINK:
                             link = getCharacterData(eventReader);
@@ -111,10 +114,11 @@ public class RSSFeedParser {
                             imageUrl = getCharacterData(eventReader);
                             break;
                         case CATEGORY:
-                            categories.add(getCharacterData(eventReader));
+                            categories.add(getCharacterData(eventReader).trim());
                             break;
                         case FULL_TEXT:
-                            full_text = getCharacterData(eventReader);
+                        case FULL_TEXT2:
+                            full_text = getCharacterData(eventReader).trim();
                             break;
                     }
                 } else if (event.isEndElement()) {
@@ -134,14 +138,14 @@ public class RSSFeedParser {
                             continue;
                         }
                         Article article = new Article();
-                        article.setTitleChannel(titleChannel);
+                        article.setTitleChannel(formatTitleChannel(titleChannel));
                         article.setSource(source);
-
                         article.setPubDateChannel(channelPubDate);
                         article.setLogo(imageUrl);
                         article.setLanguage(language);
                         article.setTitle(title);
                         article.setLink(link);
+
                         article.setDescription(description);
 
                         if (enclosure.isEmpty()) {
@@ -155,6 +159,7 @@ public class RSSFeedParser {
                         article.setPubDate(pubdate);
                         article.setCategory(categories);
                         article.setFull_text(full_text);
+                        article.setCountry(country);
                         articles.add(article);
                         eventReader.nextEvent();
                         categories = new ArrayList<>();
@@ -168,6 +173,7 @@ public class RSSFeedParser {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+        System.out.println(Thread.currentThread().getName());
         return articles;
     }
 
@@ -196,5 +202,24 @@ public class RSSFeedParser {
             return false;
         }
         return true;
+    }
+
+    private String formatTitleChannel(String title) {
+        if (title.contains("Українські Національні Новини")) {
+            title = "Українські Національні Новини";
+        }else if (title.contains("Корреспондент.net")) {
+            title = "Корреспондент.net";
+        }else if (title.contains("Deutsche Welle")) {
+            title = "Deutsche Welle";
+        }else if (title.contains("Радіо Свобода")) {
+            title = "Радіо Свобода";
+        }else if (title.contains("Новини на tsn.ua")) {
+            title = "TCH";
+        }else if (title.contains("Гордон")) {
+            title = "Гордон";
+        }else if (title.contains("Экономические Новости")) {
+            title = "Экономические Новости";
+        }
+        return title;
     }
 }

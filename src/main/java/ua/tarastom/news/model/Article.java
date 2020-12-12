@@ -3,6 +3,7 @@ package ua.tarastom.news.model;
 import ua.tarastom.news.util.Utils;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -11,6 +12,7 @@ import java.util.Objects;
 public class Article implements Comparable<Article>{
 
     private @Id @GeneratedValue Long id;
+    private String country;
     private String titleChannel;
     private String source;
     private String pubDateChannel;
@@ -39,6 +41,8 @@ public class Article implements Comparable<Article>{
     public Article(String title, String link) {
         this.title = title;
         this.link = link;
+        category = new ArrayList<>();
+        enclosure = new ArrayList<>();
     }
 
     public Long getId() {
@@ -153,6 +157,14 @@ public class Article implements Comparable<Article>{
         this.full_text = full_text;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     @Override
     public int compareTo(Article article) {
         Date date1 = Utils.getDate(this.getPubDate());
@@ -187,7 +199,6 @@ public class Article implements Comparable<Article>{
                 ", description='" + description + '\'' +
                 ", guid='" + guid + '\'' +
                 ", pubDate='" + pubDate + '\'' +
-//                ", full_text='" + full_text + '\'' +
                 ", enclosure=" + enclosure +
                 ", category=" + category +
                 '}';

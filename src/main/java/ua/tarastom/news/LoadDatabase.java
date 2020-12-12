@@ -9,7 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import ua.tarastom.news.data.SupplierData;
 import ua.tarastom.news.model.Article;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
 
 @Configuration
 public class LoadDatabase {
@@ -25,7 +26,7 @@ public class LoadDatabase {
                 List<Article> all = articleRepository.findAll();
                 Collection<Article> subtract = CollectionUtils.subtract(articles, all);
                 articleRepository.saveAll(subtract);
-                Thread.sleep(10000);
+                Thread.sleep(300000);
             }
         };
     }
