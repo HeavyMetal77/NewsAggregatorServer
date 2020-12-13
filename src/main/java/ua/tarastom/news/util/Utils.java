@@ -1,35 +1,21 @@
 package ua.tarastom.news.util;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class Utils {
 
-    public static String DateFormat(String stringDate) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy", new Locale(getCountry()));
-        return dateFormat.format(getDate(stringDate));
-    }
-
-    public static Date getDate(String stringDate) {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
-        Date date = null;
-        try {
-            date = sdf.parse(stringDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
+    public static LocalDateTime getDate(String stringDate) {
+        if (stringDate == null || stringDate.isEmpty()) {
+            return LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
         }
-        return date;
-    }
-
-    public static String getCountry() {
-        Locale locale = Locale.getDefault();
-        return locale.getCountry().toLowerCase();
-    }
-
-    public static String getLanguage() {
-        Locale locale = Locale.getDefault();
-        return locale.getLanguage();
+        LocalDateTime parse = null;
+        try {
+            parse = LocalDateTime.parse(stringDate, DateTimeFormatter.RFC_1123_DATE_TIME);
+        } catch (Exception e) {
+            System.out.println("Exception in Utils.getDate " + stringDate);
+        }
+        return parse;
     }
 }

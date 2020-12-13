@@ -3,8 +3,8 @@ package ua.tarastom.news;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PagedListHolder;
-import org.springframework.data.domain.*;
-import org.springframework.data.util.Streamable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +42,7 @@ public class ArticleController {
 
     @GetMapping("/articles/all")
     CollectionModel<EntityModel<Article>> all() {
-        Pageable pageable = PageRequest.of(0, 2, Sort.by("pubDate").descending());
+        Pageable pageable = PageRequest.of(0, 30);
         List<EntityModel<Article>> articles = articleRepository.findAll(pageable).stream()
                 .map(articleModelAssembler::toModel)
                 .collect(Collectors.toList());
@@ -67,7 +67,6 @@ public class ArticleController {
         articleFilter.setCategory(categories);
         articleFilter.setLanguage(language);
         articleFilter.setTitleChannel(titleChannel);
-        Pageable pageable = PageRequest.of(page, size, Sort.by("pubDate").descending());
 
         List<Article> matchingArticles = articleService.getMatchingArticles(articleFilter);
         List<EntityModel<Article>> entityModels = matchingArticles.stream().filter(article -> {
@@ -86,17 +85,12 @@ public class ArticleController {
             return true;
         }).map(articleModelAssembler::toModel).collect(Collectors.toList());
 
-        MutableSortDefinition mutableSortDefinition = new MutableSortDefinition("pubDate", true, false);
-//        MutableSortDefinition mutableSortDefinition = new MutableSortDefinition("id", true, true);
-        // Creation
+        MutableSortDefinition mutableSortDefinition = new MutableSortDefinition();
         PagedListHolder<EntityModel<Article>> entityModelPagedListHolder = new PagedListHolder<>(entityModels, mutableSortDefinition);
-        entityModelPagedListHolder.setPageSize(size); // number of items per page
-        entityModelPagedListHolder.setPage(page);      // set to first page
-        // Retrieval
-        entityModelPagedListHolder.getPageCount(); // number of pages
-        List<EntityModel<Article>> pageList = entityModelPagedListHolder.getPageList();// a List which represents the current page
-
-
+        entityModelPagedListHolder.setPageSize(size);
+        entityModelPagedListHolder.setPage(page);
+        entityModelPagedListHolder.getPageCount();
+        List<EntityModel<Article>> pageList = entityModelPagedListHolder.getPageList();
         return CollectionModel.of(pageList, linkTo(methodOn(ArticleController.class).all()).withSelfRel());
     }
 }

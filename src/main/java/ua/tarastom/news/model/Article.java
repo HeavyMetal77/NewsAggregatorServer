@@ -1,31 +1,37 @@
 package ua.tarastom.news.model;
 
-import ua.tarastom.news.util.Utils;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import ua.tarastom.news.util.DateHandler;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Article implements Comparable<Article>{
+public class Article implements Comparable<Article> {
 
-    private @Id @GeneratedValue Long id;
+    private @Id
+    @GeneratedValue
+    Long id;
     private String country;
     private String titleChannel;
     private String source;
-    private String pubDateChannel;
+    @JsonDeserialize(using = DateHandler.class)
+    private LocalDateTime pubDateChannel;
     private String logo;
     private String language;
     private String title;
     private String link;
+    private String guid;
+    @JsonDeserialize(using = DateHandler.class)
+    private LocalDateTime pubDate;
+    private String region;
+
     @Lob
     @Column(length = 1000000)
     private String description;
-    private String guid;
-    private String pubDate;
-
     @Lob
     @Column(length = 1000000)
     private String full_text;
@@ -117,11 +123,11 @@ public class Article implements Comparable<Article>{
         this.guid = guid;
     }
 
-    public String getPubDate() {
+    public LocalDateTime getPubDate() {
         return pubDate;
     }
 
-    public void setPubDate(String pubDate) {
+    public void setPubDate(LocalDateTime pubDate) {
         this.pubDate = pubDate;
     }
 
@@ -141,11 +147,11 @@ public class Article implements Comparable<Article>{
         this.source = source;
     }
 
-    public String getPubDateChannel() {
+    public LocalDateTime getPubDateChannel() {
         return pubDateChannel;
     }
 
-    public void setPubDateChannel(String pubDateChannel) {
+    public void setPubDateChannel(LocalDateTime pubDateChannel) {
         this.pubDateChannel = pubDateChannel;
     }
 
@@ -165,11 +171,19 @@ public class Article implements Comparable<Article>{
         this.country = country;
     }
 
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
     @Override
     public int compareTo(Article article) {
-        Date date1 = Utils.getDate(this.getPubDate());
-        Date date2 = Utils.getDate(article.getPubDate());
-        return date1.compareTo(date2);
+        LocalDateTime date1 = this.getPubDate();
+        LocalDateTime date2 = article.getPubDate();
+        return date2.compareTo(date1);
     }
 
     @Override

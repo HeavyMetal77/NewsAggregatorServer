@@ -19,7 +19,6 @@ import java.util.List;
 public class RSSFeedParser {
     static final String TITLE = "title";
     static final String DESCRIPTION = "description";
-    static final String CHANNEL = "channel";
     static final String LANGUAGE = "language";
     static final String LINK = "link";
     static final String IMAGE_URL = "url";
@@ -31,7 +30,7 @@ public class RSSFeedParser {
     static final String CATEGORY = "category";
     static final String FULL_TEXT = "full-text";
     static final String FULL_TEXT2 = "fulltext";
-    private String country;
+    private final String country;
     List<Article> articles = new ArrayList<>();
     final URL url;
 
@@ -114,7 +113,8 @@ public class RSSFeedParser {
                             imageUrl = getCharacterData(eventReader);
                             break;
                         case CATEGORY:
-                            categories.add(getCharacterData(eventReader).trim());
+                            String categoryTemp = getCharacterData(eventReader).trim();
+                            categories.add(formatCategory(categoryTemp));
                             break;
                         case FULL_TEXT:
                         case FULL_TEXT2:
@@ -140,7 +140,7 @@ public class RSSFeedParser {
                         Article article = new Article();
                         article.setTitleChannel(formatTitleChannel(titleChannel));
                         article.setSource(source);
-                        article.setPubDateChannel(channelPubDate);
+                        article.setPubDateChannel(Utils.getDate(channelPubDate));
                         article.setLogo(imageUrl);
                         article.setLanguage(language);
                         article.setTitle(title);
@@ -156,7 +156,7 @@ public class RSSFeedParser {
                         }
 
                         article.setGuid(guid);
-                        article.setPubDate(pubdate);
+                        article.setPubDate(Utils.getDate(pubdate));
                         article.setCategory(categories);
                         article.setFull_text(full_text);
                         article.setCountry(country);
@@ -164,7 +164,6 @@ public class RSSFeedParser {
                         eventReader.nextEvent();
                         categories = new ArrayList<>();
                         enclosure = new ArrayList<>();
-                        continue;
                     }
                 }
             }
@@ -207,19 +206,30 @@ public class RSSFeedParser {
     private String formatTitleChannel(String title) {
         if (title.contains("Українські Національні Новини")) {
             title = "Українські Національні Новини";
-        }else if (title.contains("Корреспондент.net")) {
+        } else if (title.contains("Корреспондент.net")) {
             title = "Корреспондент.net";
-        }else if (title.contains("Deutsche Welle")) {
+        } else if (title.contains("Deutsche Welle")) {
             title = "Deutsche Welle";
-        }else if (title.contains("Радіо Свобода")) {
+        } else if (title.contains("Радіо Свобода")) {
             title = "Радіо Свобода";
-        }else if (title.contains("Новини на tsn.ua")) {
+        } else if (title.contains("Новини на tsn.ua")) {
             title = "TCH";
-        }else if (title.contains("Гордон")) {
+        } else if (title.contains("Гордон")) {
             title = "Гордон";
-        }else if (title.contains("Экономические Новости")) {
+        } else if (title.contains("Экономические Новости")) {
             title = "Экономические Новости";
+        }else if (title.contains("ТЕЛЕГРАФ")) {
+            title = "ТЕЛЕГРАФ";
         }
         return title;
+    }
+
+    private String formatCategory(String category) {
+        if (category.startsWith("Новини | ")) {
+            category = category.replace("Новини | ", "");
+        } else if (category.startsWith("Новости | ")) {
+            category = category.replace("Новости | ", "");
+        }
+        return category;
     }
 }

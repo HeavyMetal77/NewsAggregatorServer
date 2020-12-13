@@ -38,12 +38,20 @@ public class SupplierData {
         urls.add("https://hvylya.net/feed/rss2.xml"); //hvylya - ru
         urls.add("https://gordonua.com/xml/rss_category/top.html"); //gordonua -ru   https://gordonua.com/rsslist.html ще багато стрічок
         urls.add("https://gordonua.com/ukr/xml/rss_category/top.html"); //gordonua -ua   https://gordonua.com/rsslist.html ще багато стрічок
-        urls.add("https://fakty.com.ua/ua/feed/"); //ictv -ua   https://gordonua.com/rsslist.html ще багато стрічок
+        urls.add("https://fakty.com.ua/ua/feed/"); //ictv -ua
         urls.add("https://tsn.ua/rss/full.rss"); //tsn -ua     ще багато стрічок
         urls.add("https://risu.ua/rss.xml"); //risu -ua
         urls.add("https://sundries.com.ua/feed/"); //sundries -ua
         urls.add("https://rss.unian.net/site/news_ukr.rss"); //unian -ua
         urls.add("https://enovosty.com/rss/rss.xml"); //Экономические Новости - ua-ru
+        urls.add("https://telegraf.com.ua/yandex-feed/"); //telegraf - ru
+        urls.add("https://telegraf.com.ua/ukr/yandex-feed/"); //telegraf - ua
+        urls.add("https://golos.ua/feed/"); //golos - ua
+        urls.add("https://ua.krymr.com/api/zukopvepmipt"); //krymr - ua  https://ua.krymr.com/rssfeeds ще багато стрічок
+        urls.add("https://ru.krymr.com/api/zgtopme_iip_"); //krymr - ru  https://ua.krymr.com/rssfeeds ще багато стрічок
+//
+//        urls.add("http://treebuna.info/feed"); //treebuna - ru - Odesa
+//        urls.add("http://1tv.od.ua/news.rss"); //Первый городской - ru - Odesa
 
         List<Article> articleList = new ArrayList<>();
         for (String url : urls) {
