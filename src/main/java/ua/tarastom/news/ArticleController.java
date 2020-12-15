@@ -23,9 +23,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 public class ArticleController {
 
-    private ArticleRepository articleRepository;
-    private ArticleModelAssembler articleModelAssembler;
-    private ArticleService articleService;
+    private final ArticleRepository articleRepository;
+    private final ArticleModelAssembler articleModelAssembler;
+    private final ArticleService articleService;
 
     public ArticleController(ArticleRepository articleRepository, ArticleModelAssembler articleModelAssembler, ArticleService articleService) {
         this.articleRepository = articleRepository;
