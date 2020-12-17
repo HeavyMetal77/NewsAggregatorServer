@@ -1,6 +1,7 @@
 package ua.tarastom.news.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.springframework.transaction.annotation.Transactional;
 import ua.tarastom.news.util.DateHandler;
 
 import javax.persistence.*;
@@ -107,10 +108,12 @@ public class Article implements Comparable<Article> {
         this.description = description;
     }
 
+    @Transactional
     public List<String> getEnclosure() {
         return enclosure;
     }
 
+    @Transactional
     public void setEnclosure(List<String> enclosure) {
         this.enclosure = enclosure;
     }
@@ -131,10 +134,12 @@ public class Article implements Comparable<Article> {
         this.pubDate = pubDate;
     }
 
+    @Transactional
     public List<String> getCategory() {
         return category;
     }
 
+    @Transactional
     public void setCategory(List<String> category) {
         this.category = category;
     }

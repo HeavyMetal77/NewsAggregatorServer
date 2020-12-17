@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +42,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/all")
+    @Transactional
     CollectionModel<EntityModel<Article>> all() {
         Pageable pageable = PageRequest.of(0, 30);
         List<EntityModel<Article>> articles = articleRepository.findAll(pageable).stream()
@@ -50,6 +52,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/find")
+    @Transactional
     public CollectionModel<EntityModel<Article>> all(
             @RequestParam(required = false) String key,
             @RequestParam(required = false) String country,

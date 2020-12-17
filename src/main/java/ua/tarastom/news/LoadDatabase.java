@@ -12,7 +12,6 @@ import ua.tarastom.news.model.Article;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,14 +19,14 @@ import java.util.stream.Collectors;
 public class LoadDatabase {
 
     private static final Logger logger = LoggerFactory.getLogger(LoadDatabase.class);
-    private final int maxElementDB = 9800;
+    private final int maxElementDB = 9500;
     private final int normElementDB = 8000;
 
     @Bean
     CommandLineRunner initDatabase(ArticleRepository articleRepository) {
 
-
         return args -> {
+            articleRepository.deleteAll();
             while (true) {
                 List<Article> articles = SupplierData.loadRSS();
                 articles.sort((o1, o2) -> o2.getPubDate().compareTo(o1.getPubDate()));
@@ -43,12 +42,12 @@ public class LoadDatabase {
                     List<Article> articleListForDelete = allFromDB.stream().skip(normElementDB).collect(Collectors.toList());
                     articleRepository.deleteAll(articleListForDelete);
 
-                    LocalDateTime pubDate = newAllFromDB.get(allFromDB.size() - 1).getPubDate();
-                    articles = articles.stream().filter((element)-> element.getPubDate().isAfter(pubDate)).collect(Collectors.toList());
+                    LocalDateTime pubDate = newAllFromDB.get(newAllFromDB.size() - 1).getPubDate();
+                    articles = articles.stream().filter((element) -> element.getPubDate().isAfter(pubDate)).collect(Collectors.toList());
                 }
                 Collection<Article> subtract = CollectionUtils.subtract(articles, newAllFromDB);
                 articleRepository.saveAll(subtract);
-                Thread.sleep(20000);
+                Thread.sleep(3000);
             }
         };
     }

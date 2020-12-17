@@ -14,7 +14,7 @@ public class SupplierData {
 
     public static List<Article> loadRSS() {
         long start = System.currentTimeMillis();
-        ExecutorService executorService = Executors.newCachedThreadPool();
+        ExecutorService executorService = Executors.newFixedThreadPool(8);
         List<String> urls = new ArrayList<>();
         urls.add("https://ua.interfax.com.ua/news/last.rss"); //interfax
         urls.add("https://censor.net/includes/news_ru.xml"); //censor.net
