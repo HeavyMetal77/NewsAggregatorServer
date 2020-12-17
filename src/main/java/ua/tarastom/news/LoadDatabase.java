@@ -26,7 +26,7 @@ public class LoadDatabase {
                 List<Article> all = articleRepository.findAll();
                 Collection<Article> subtract = CollectionUtils.subtract(articles, all);
                 articleRepository.saveAll(subtract);
-                Thread.sleep(300000);
+                Thread.sleep(20000);
             }
         };
     }
