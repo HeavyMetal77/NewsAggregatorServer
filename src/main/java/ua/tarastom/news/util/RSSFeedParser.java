@@ -30,6 +30,7 @@ public class RSSFeedParser {
     static final String CATEGORY = "category";
     static final String FULL_TEXT = "full-text";
     static final String FULL_TEXT2 = "fulltext";
+    static final String FULL_TEXT3 = "encoded";
     private final String country;
     List<Article> articles = new ArrayList<>();
     final URL url;
@@ -118,6 +119,7 @@ public class RSSFeedParser {
                             break;
                         case FULL_TEXT:
                         case FULL_TEXT2:
+                        case FULL_TEXT3:
                             full_text = getCharacterData(eventReader).trim();
                             break;
                     }
