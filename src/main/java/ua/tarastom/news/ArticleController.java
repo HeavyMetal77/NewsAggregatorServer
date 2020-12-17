@@ -58,19 +58,26 @@ public class ArticleController {
             @RequestParam(required = false) String titleChannel,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "30") int size
-
     ) {
         Article articleFilter = new Article();
-        articleFilter.setCountry(country);
-        List<String> categories = new ArrayList<>();
-        categories.add(category);
-        articleFilter.setCategory(categories);
-        articleFilter.setLanguage(language);
-        articleFilter.setTitleChannel(titleChannel);
+        if (!country.isEmpty()) {
+            articleFilter.setCountry(country);
+        }
+        if (!category.isEmpty()) {
+            List<String> categories = new ArrayList<>();
+            categories.add(category);
+            articleFilter.setCategory(categories);
+        }
+        if (!language.isEmpty()) {
+            articleFilter.setLanguage(language);
+        }
+        if (!titleChannel.isEmpty()) {
+            articleFilter.setTitleChannel(titleChannel);
+        }
 
         List<Article> matchingArticles = articleService.getMatchingArticles(articleFilter);
         List<EntityModel<Article>> entityModels = matchingArticles.stream().filter(article -> {
-            if (category != null && !category.isEmpty()) {
+            if (!category.isEmpty()) {
                 if (!article.getCategory().contains(category.trim())) {
                     return false;
                 }

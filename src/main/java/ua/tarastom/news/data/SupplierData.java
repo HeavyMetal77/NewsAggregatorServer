@@ -50,6 +50,8 @@ public class SupplierData {
         urls.add("https://ua.krymr.com/api/zukopvepmipt"); //krymr - ua  https://ua.krymr.com/rssfeeds ще багато стрічок
         urls.add("https://ru.krymr.com/api/zgtopme_iip_"); //krymr - ru  https://ua.krymr.com/rssfeeds ще багато стрічок
         urls.add("http://nashigroshi.org/feed/"); //nashigroshi -  ua
+        urls.add("https://focus.ua/modules/rss.php"); //focus -  ua
+        urls.add("https://www.ostro.org/rss/"); //ostro -  ua
 //
 //        urls.add("http://treebuna.info/feed"); //treebuna - ru - Odesa
 //        urls.add("http://1tv.od.ua/news.rss"); //Первый городской - ru - Odesa
