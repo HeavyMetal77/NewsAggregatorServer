@@ -208,18 +208,9 @@ public class Article implements Comparable<Article> {
     public String toString() {
         return "Article{" +
                 "id=" + id +
-                ", titleChannel='" + titleChannel + '\'' +
-                ", source='" + source + '\'' +
-                ", pubDateChannel='" + pubDateChannel + '\'' +
-                ", logo='" + logo + '\'' +
-                ", language='" + language + '\'' +
-                ", title='" + title + '\'' +
-                ", link='" + link + '\'' +
-                ", description='" + description + '\'' +
-                ", guid='" + guid + '\'' +
                 ", pubDate='" + pubDate + '\'' +
-                ", enclosure=" + enclosure +
-                ", category=" + category +
+                ", titleChannel='" + titleChannel + '\'' +
+                ", title='" + title + '\'' +
                 '}';
     }
 }

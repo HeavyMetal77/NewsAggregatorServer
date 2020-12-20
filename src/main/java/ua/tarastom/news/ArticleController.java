@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ua.tarastom.news.model.Article;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,11 +45,13 @@ public class ArticleController {
     @GetMapping("/articles/all")
     @Transactional
     CollectionModel<EntityModel<Article>> all() {
-        Pageable pageable = PageRequest.of(0, 30);
-        List<EntityModel<Article>> articles = articleRepository.findAll(pageable).stream()
-                .map(articleModelAssembler::toModel)
-                .collect(Collectors.toList());
-        return CollectionModel.of(articles, linkTo(methodOn(ArticleController.class).all()).withSelfRel());
+        return  all("", "", "", "", "", 0, 30);
+//
+//        Pageable pageable = PageRequest.of(0, 30);
+//        List<EntityModel<Article>> articles = articleRepository.findAll(pageable).stream()
+//                .map(articleModelAssembler::toModel)
+//                .collect(Collectors.toList());
+//        return CollectionModel.of(articles, linkTo(methodOn(ArticleController.class).all()).withSelfRel());
     }
 
     @GetMapping("/articles/find")
@@ -79,6 +82,8 @@ public class ArticleController {
         }
 
         List<Article> matchingArticles = articleService.getMatchingArticles(articleFilter);
+        matchingArticles.sort(Comparator.naturalOrder());
+//        matchingArticles.sort((o1, o2) -> o2.getPubDate().compareTo(o1.getPubDate()));
         List<EntityModel<Article>> entityModels = matchingArticles.stream().filter(article -> {
             if (!category.isEmpty()) {
                 if (!article.getCategory().contains(category.trim())) {

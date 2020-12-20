@@ -136,7 +136,7 @@ public class RSSFeedParser {
                             }
                         } else {
                             //якщо link - не дійсна адреса, то об'єкт Article не створюється
-                            System.out.println(link);
+//                            System.out.println(link);
                             continue;
                         }
                         Article article = new Article();
@@ -192,6 +192,7 @@ public class RSSFeedParser {
         try {
             return url.openStream();
         } catch (IOException e) {
+            System.out.println("error: " + url);
             throw new RuntimeException(e);
         }
     }
