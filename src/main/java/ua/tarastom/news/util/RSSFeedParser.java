@@ -174,7 +174,7 @@ public class RSSFeedParser {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        System.out.println(Thread.currentThread().getName());
+//        System.out.println(Thread.currentThread().getName());
         return articles;
     }
 
