@@ -46,15 +46,10 @@ public class SupplierData {
         urls.add("https://enovosty.com/rss/rss.xml"); //Экономические Новости - ua-ru
         urls.add("https://telegraf.com.ua/yandex-feed/"); //telegraf - ru
         urls.add("https://telegraf.com.ua/ukr/yandex-feed/"); //telegraf - ua
-        urls.add("https://golos.ua/feed/"); //golos - ua
         urls.add("https://ua.krymr.com/api/zukopvepmipt"); //krymr - ua  https://ua.krymr.com/rssfeeds ще багато стрічок
         urls.add("https://ru.krymr.com/api/zgtopme_iip_"); //krymr - ru  https://ua.krymr.com/rssfeeds ще багато стрічок
         urls.add("http://nashigroshi.org/feed/"); //nashigroshi -  ua
         urls.add("https://focus.ua/modules/rss.php"); //focus -  ua
-        urls.add("https://www.ostro.org/rss/"); //ostro -  ua
-//
-//        urls.add("http://treebuna.info/feed"); //treebuna - ru - Odesa
-//        urls.add("http://1tv.od.ua/news.rss"); //Первый городской - ru - Odesa
 
         List<Article> articleList = new ArrayList<>();
         for (String url : urls) {
@@ -62,7 +57,7 @@ public class SupplierData {
                 articleList.addAll(executorService.submit(() -> new RSSFeedParser(url, "ua").readFeed()).get());
                 Collections.sort(articleList);
             } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
                 System.out.println("Exception: " + url);
             }
         }
@@ -72,9 +67,3 @@ public class SupplierData {
         return articleList;
     }
 }
-//https://news.google.com/
-//https://bykvu.com/ua/
-//https://itech.co.ua/
-//https://odessamedia.net/
-//https://cikavosti.com/
-//https://newsyou.info/

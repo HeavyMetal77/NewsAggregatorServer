@@ -26,6 +26,7 @@ public class LoadDatabase {
             articleRepository.deleteAll();
             while (true) {
                 List<Article> articlesFromRSS = SupplierData.loadRSS();
+                long start = System.currentTimeMillis();
                 List<Article> allFromDB = articleRepository.findAll();
                 List<Article> newAllFromDB = allFromDB;
                 if (allFromDB.size() > maxElementDB) {
@@ -39,7 +40,9 @@ public class LoadDatabase {
                 Collection<Article> subtract = CollectionUtils.subtract(articlesFromRSS, newAllFromDB);
                 System.out.println(subtract);
                 subtract.forEach(articleRepository::save);
-                Thread.sleep(30000);
+                long end = System.currentTimeMillis();
+                System.out.println("saving db: " + (end-start));
+                Thread.sleep(10000);
             }
         };
     }
